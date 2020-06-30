@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> matches snapshot 1`] = `
+<section
+  class="header-section header-background"
+  data-testid="header-section"
+>
+  <h1
+    class="text-giant text-white normal"
+  >
+    Andrea lactancia
+  </h1>
+  <h2
+    class="text-md text-white light italic"
+  >
+    Una crianza consciente crea adultos sanos...
+  </h2>
+</section>
+`;
+
+exports[`<Quote /> matches snapshot 1`] = `
+<section
+  class="quote-section"
+  data-testid="quote-section"
+>
+  <p
+    class="parenthood-quote text-md"
+  >
+    -La función de un hijo es vivir su propia vida, no vivir la vida que su padre ansioso cree que debe vivir. 
+    <em>
+      -A.S. Neill.
+    </em>
+  </p>
+</section>
+`;
