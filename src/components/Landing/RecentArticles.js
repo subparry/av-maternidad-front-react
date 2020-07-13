@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../support/constants";
 import Slider from "../shared/Slider";
 import ArticlePreviewCard from "../shared/ArticlePreviewCard";
 
 const RecentArticles = () => {
+  const [recent, setRecent] = useState([]);
+
   useEffect(() => {
-    fetch(`${API_BASE_URL}/recent_posts`).catch((err) => {});
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch(`${API_BASE_URL}/recent_posts`, { signal })
+      .then((res) => res.json())
+      .then((json) => setRecent(json))
+      .catch((err) => {});
+    return () => {
+      controller.abort();
+    };
   }, []);
+
   return (
     <section data-testid="recent-articles-section">
       <h2>Artículos recientes</h2>
       <Slider
-        items={[1, 2, 3, 4, 5, 6, 7, 8].map((e) => (
-          <ArticlePreviewCard key={e} />
+        items={recent.map((e, i) => (
+          <ArticlePreviewCard key={i} {...e} thumbnailImg={e.image} />
         ))}
         itemWidthInPx={290}
       />

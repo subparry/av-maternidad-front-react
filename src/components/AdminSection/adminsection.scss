@@ -2,3 +2,47 @@
   color: red;
   font-style: oblique;
 }
+
+.admin-section-new-article {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 150px;
+  & input,
+  textarea {
+    margin: 10px 0;
+    height: 35px;
+    border-radius: 10px;
+  }
+
+  > h2 {
+    margin-bottom: 0;
+  }
+
+  > hr {
+    width: 100%;
+  }
+
+  > .new-field-adder {
+    display: flex;
+    justify-content: flex-end;
+    height: 35px;
+    > button {
+      margin-left: 15px;
+    }
+
+    > select {
+      width: 150px;
+      height: 100%;
+    }
+  }
+
+  & textarea {
+    height: 200px;
+  }
+
+  > button {
+    align-self: flex-end;
+    margin-top: 20px;
+    height: 35px;
+  }
+}

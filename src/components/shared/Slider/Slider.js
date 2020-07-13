@@ -7,10 +7,13 @@ const Slider = ({ items, itemWidthInPx }) => {
 
   const viewportWidth = window.innerWidth;
   const itemsQty = Math.floor(viewportWidth / (parseInt(itemWidthInPx) + 10));
-
+  const totalItemsFitInViewport = () => items.length <= itemsQty;
   const nextDisabled = () =>
-    startingIdx === items.length - itemsQty || isTransitioning;
-  const prevDisabled = () => startingIdx === 0 || isTransitioning;
+    startingIdx === items.length - itemsQty ||
+    isTransitioning ||
+    totalItemsFitInViewport();
+  const prevDisabled = () =>
+    startingIdx === 0 || isTransitioning || totalItemsFitInViewport();
   const shiftDisabled = (delta) =>
     delta < 0 ? prevDisabled() : nextDisabled();
   const transitionClassName = () => {

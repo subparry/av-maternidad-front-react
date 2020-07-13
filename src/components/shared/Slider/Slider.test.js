@@ -132,4 +132,24 @@ describe("<Slider />", () => {
       getByTestId("apa-slider").querySelector(".apa-slider-next-arrow")
     ).toHaveProperty("disabled", true);
   });
+
+  it("clicking next button does nothing if total amount of components less than maximum fit in screen", () => {
+    const { getByTestId, clickNext } = setup(2);
+
+    expect(
+      getByTestId("apa-slider").querySelector(".card-0")
+    ).toBeInTheDocument();
+    expect(
+      getByTestId("apa-slider").querySelector(".card-1")
+    ).toBeInTheDocument();
+
+    clickNext();
+
+    expect(
+      getByTestId("apa-slider").querySelector(".card-0")
+    ).toBeInTheDocument();
+    expect(
+      getByTestId("apa-slider").querySelector(".card-1")
+    ).toBeInTheDocument();
+  });
 });

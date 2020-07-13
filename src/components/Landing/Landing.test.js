@@ -51,12 +51,19 @@ describe("<RecentArticles />", () => {
   it("requests recent articles to api", () => {
     const mockFetch = jest.spyOn(window, "fetch");
     render(<RecentArticles />);
-    expect(mockFetch).toHaveBeenCalledTimes(1);
-    expect(mockFetch).toHaveBeenCalledWith(`${API_BASE_URL}/recent_posts`);
+    waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${API_BASE_URL}/recent_posts`,
+      expect.anything()
+    );
   });
 
   it("renders <Slider /> component", () => {
     const { container } = render(<RecentArticles />);
+
     expect(
       container.querySelector(".apa-slider-container")
     ).toBeInTheDocument();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminLogin from "../../AdminLogin/AdminLogin";
 import storageHelper from "../../../support/storageUtils";
+import idUtils from "../../../support/idUtils";
 
 const withRequireAuth = (WrappedComponent) => {
   return (props) => {
@@ -15,12 +16,12 @@ const withRequireAuth = (WrappedComponent) => {
     };
 
     useEffect(() => {
-      const randomID = `wrapped-component-${Date.now()}`;
+      const uniqueId = idUtils.createUniqueId("with-require-auth-component");
       storageHelper.subscribe({
-        id: randomID,
+        id: uniqueId,
         callback: storageChangesCallback,
       });
-      return () => storageHelper.unsubscribe(randomID);
+      return () => storageHelper.unsubscribe(uniqueId);
     }, []);
 
     if (!currentToken) return <AdminLogin />;
