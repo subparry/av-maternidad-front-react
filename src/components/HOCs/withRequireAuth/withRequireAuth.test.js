@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import withRequireAuth from "./withRequireAuth";
@@ -17,30 +17,42 @@ const setup = () => {
 describe("withRequireAuth", () => {
   it("without access_token in localStorage, it renders login form", () => {
     const { queryByTestId } = setup();
+    localStorage.removeItem("access_token");
     expect(queryByTestId("sample-component")).not.toBeInTheDocument();
     expect(queryByTestId("login-form")).toBeInTheDocument();
   });
 
   it("after authenticating renders intended component normally", async () => {
-    const { queryByTestId, getByRole, getByAltText } = setup();
-    typeEmail(getByRole);
-    typePassword(getByAltText);
-    submitForm(getByRole);
+    const { queryByTestId } = setup();
+    typeEmail();
+    typePassword();
+    submitForm();
     await waitFor(() => {
       expect(queryByTestId("sample-component")).toBeInTheDocument();
     });
     expect(queryByTestId("login-form")).not.toBeInTheDocument();
   });
+
+  it("with expired or invalid token in localStorage, renders login form", async () => {
+    localStorage.setItem("access_token", "some_invalid_jibberish");
+    setup();
+    await waitFor(() => {
+      expect(screen.queryByTestId("sample-component")).not.toBeInTheDocument();
+    });
+  });
 });
 
-function typeEmail(getByRole, mail = sampleEmail) {
-  userEvent.type(getByRole("textbox", { name: "Ingrese su email" }), mail);
+function typeEmail(mail = sampleEmail) {
+  userEvent.type(
+    screen.getByRole("textbox", { name: "Ingrese su email" }),
+    mail
+  );
 }
 
-function submitForm(getByRole) {
-  userEvent.click(getByRole("button", { name: "Ingresar" }));
+function submitForm() {
+  userEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
-function typePassword(getByAltText) {
-  userEvent.type(getByAltText("Ingrese su contraseña"), "123123");
+function typePassword() {
+  userEvent.type(screen.getByAltText("Ingrese su contraseña"), "123123");
 }

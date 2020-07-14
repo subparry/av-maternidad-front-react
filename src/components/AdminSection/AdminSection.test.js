@@ -1,17 +1,11 @@
 import React from "react";
 
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-  waitForElementToBeRemoved,
-  waitForDomChange,
-} from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import AdminSection from "./AdminSection";
 import NewArticleForm from "./NewArticleForm";
 import userEvent from "@testing-library/user-event";
 import { API_BASE_URL } from "../../support/constants";
+const sampleEmail = "example@gmail.com";
 
 describe("Unauthenticated <AdminSection />", () => {
   it("shows admin login", () => {
@@ -21,10 +15,15 @@ describe("Unauthenticated <AdminSection />", () => {
 });
 
 describe("Authenticated <AdminSection />", () => {
-  it("renders admin section", () => {
-    window.localStorage.setItem("access_token", "test");
+  it("renders admin section", async () => {
+    localStorage.removeItem("access_token");
     render(<AdminSection />);
-    expect(screen.queryByTestId("admin-section")).toBeInTheDocument();
+    typeEmail();
+    typePassword();
+    submitForm();
+    await waitFor(() => {
+      expect(screen.queryByTestId("admin-section")).toBeInTheDocument();
+    });
   });
 });
 
@@ -151,3 +150,18 @@ describe("<NewArticleForm />", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+function typeEmail(mail = sampleEmail) {
+  userEvent.type(
+    screen.getByRole("textbox", { name: "Ingrese su email" }),
+    mail
+  );
+}
+
+function submitForm() {
+  userEvent.click(screen.getByRole("button", { name: "Ingresar" }));
+}
+
+function typePassword() {
+  userEvent.type(screen.getByAltText("Ingrese su contraseña"), "123123");
+}
