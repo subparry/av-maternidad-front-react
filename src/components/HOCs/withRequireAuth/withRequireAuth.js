@@ -8,7 +8,7 @@ import Spinner from "../../shared/Spinner";
 const withRequireAuth = (WrappedComponent) => {
   return (props) => {
     const [currentToken, setCurrentToken] = useState({
-      token: Boolean(localStorage.getItem("access_token")),
+      token: localStorage.getItem("access_token"),
       valid: false,
       checked: false,
     });
@@ -25,6 +25,7 @@ const withRequireAuth = (WrappedComponent) => {
 
     const tokenMissing = () => !currentToken.token;
     const tokenUnchecked = () => !currentToken.checked;
+
     useEffect(() => {
       const uniqueId = idUtils.createUniqueId("with-require-auth-component");
       storageHelper.subscribe({
